@@ -1,0 +1,48 @@
+/// Build-time configuration.
+///
+/// Defaults point at this project's Supabase instance, so a plain
+/// `flutter run` works. Pass
+/// --dart-define=SUPABASE_URL=... / SUPABASE_PUBLISHABLE_KEY=... to point the
+/// app at another one.
+///
+/// The publishable (anon) key is safe to ship: RLS restricts it to reading
+/// published artworks. The service role key is never used by the app — only by
+/// tools/compile-targets.
+class Config {
+  const Config._();
+
+  /// Defaults to this project's Supabase instance; override for another one.
+  static const supabaseUrl = String.fromEnvironment(
+    'SUPABASE_URL',
+    defaultValue: 'https://skyvxextruhfofmjopln.supabase.co',
+  );
+
+  /// Supabase renamed the anon key to the "publishable key". Both define names
+  /// are accepted so older run configurations keep working.
+  ///
+  /// Defaults to this project's publishable key. It is public by design (it
+  /// ships in every APK and web build anyway); RLS is what protects the data.
+  static const _publishableKey = String.fromEnvironment(
+    'SUPABASE_PUBLISHABLE_KEY',
+    defaultValue: 'sb_publishable_1CNx6iq1rTZUk65CyINweg_R657JQ8L',
+  );
+  static const _anonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
+  static String get supabaseKey =>
+      _publishableKey.isNotEmpty ? _publishableKey : _anonKey;
+
+  /// Port for the in-app server that hosts the bundled AR page. Anything
+  /// unused works; the page must be served over http://localhost rather than
+  /// file:// because getUserMedia requires a secure context, and localhost
+  /// counts as one while file:// does not.
+  static const localServerPort = 8080;
+
+  static const targetsBucket = 'ar-targets';
+  static const videosBucket = 'ar-videos';
+
+  static bool get isConfigured =>
+      supabaseUrl.isNotEmpty && supabaseKey.isNotEmpty;
+
+  static String get configurationError =>
+      'Supabase is not configured. Run with:\n'
+      '  --dart-define=SUPABASE_PUBLISHABLE_KEY=...';
+}

@@ -1,0 +1,42 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+.idea/
+.vscode/
+
+# Android
+android/.gradle/
+android/local.properties
+android/app/debug/
+android/app/profile/
+android/app/release/
+*.jks
+key.properties
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/flutter_export_environment.sh
+
+# Secrets — never commit. The compile tool uses the Supabase SERVICE ROLE key.
+.env
+.env.*
+!.env.example
+tools/compile-targets/.env
+
+# Node
+node_modules/
+
+# Compiler output. targets/ and videos/ ARE committed: the Publish content
+# workflow compiles from them. Transcode clips to ~6 MB first (see README).
+tools/compile-targets/out/
+
+# OS
+.DS_Store
+Thumbs.db
